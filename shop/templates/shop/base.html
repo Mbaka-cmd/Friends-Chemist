@@ -1,0 +1,37 @@
+{% load static %}<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}{% if info.name %}{{ info.name }}{% else %}Friends Chemist &amp; Agrovet{% endif %}{% endblock %}</title><link rel="stylesheet" href="{% static 'shop/app.css' %}"></head>
+<body class="{{ dept|default:'home' }}">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-bottle" viewBox="0 0 64 64"><rect x="24" y="4" width="16" height="9" rx="2" fill="#fff"/><path d="M26 13h12v6l6 8v29a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4V27l6-8z" fill="currentColor"/><rect x="22" y="32" width="20" height="16" rx="2" fill="#fff" opacity=".85"/><path d="M32 35v10M27 40h10" stroke="currentColor" stroke-width="3"/></symbol>
+<symbol id="i-pack" viewBox="0 0 64 64"><rect x="8" y="14" width="48" height="36" rx="5" fill="currentColor"/><rect x="14" y="20" width="36" height="8" rx="3" fill="#fff" opacity=".9"/><circle cx="20" cy="40" r="4" fill="#fff"/><circle cx="32" cy="40" r="4" fill="#fff"/><circle cx="44" cy="40" r="4" fill="#fff"/></symbol>
+<symbol id="i-tube" viewBox="0 0 64 64"><path d="M20 6h24l-3 10H23z" fill="currentColor"/><rect x="22" y="16" width="20" height="38" rx="3" fill="currentColor" opacity=".85"/><rect x="26" y="24" width="12" height="14" rx="2" fill="#fff" opacity=".9"/><rect x="21" y="54" width="22" height="5" rx="1" fill="currentColor"/></symbol>
+<symbol id="i-box" viewBox="0 0 64 64"><rect x="8" y="18" width="48" height="34" rx="6" fill="currentColor"/><path d="M32 26v18M23 35h18" stroke="#fff" stroke-width="5"/></symbol>
+<symbol id="i-bag" viewBox="0 0 64 64"><path d="M16 10h32l4 8v34a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V18z" fill="currentColor"/><rect x="18" y="26" width="28" height="18" rx="3" fill="#fff" opacity=".9"/><path d="M26 35h12" stroke="currentColor" stroke-width="3"/></symbol>
+<symbol id="i-packet" viewBox="0 0 64 64"><path d="M32 4c8 2 10 8 10 8H22s2-6 10-8z" fill="currentColor"/><rect x="14" y="12" width="36" height="46" rx="5" fill="currentColor"/><rect x="18" y="26" width="28" height="18" rx="3" fill="#fff" opacity=".9"/></symbol>
+</defs></svg>
+{% if user.is_authenticated and request.path|slice:":7" == "/staff/" %}
+<div class="app"><aside class="side"><a class="brand" href="/staff/"><span class="mark">&#127807;</span><span>AdGrovet<small>Health &amp; Farm Solutions</small></span></a>
+<a href="/staff/">Dashboard</a>
+{% if user.is_superuser or user.profile.department == 'chemist' %}<h6>Chemist</h6><a href="/staff/chemist/inventory/">Stock management</a><a href="/staff/chemist/stock/">Receive / adjust</a><a href="/staff/chemist/ledger/batches/">Batches &amp; expiry</a><a href="/staff/chemist/ledger/movements/">Stock movements</a><a href="/staff/chemist/sales/">Sales</a><a href="/staff/chemist/pos/">POS</a>{% if user.is_superuser %}<a href="/staff/chemist/reports/">Reports</a>{% endif %}<a href="/staff/chemist/enquiries/">Enquiries</a>{% endif %}
+{% if user.is_superuser or user.profile.department == 'agrovet' %}<h6>Agrovet</h6><a href="/staff/agrovet/inventory/">Stock management</a><a href="/staff/agrovet/stock/">Receive / adjust</a><a href="/staff/agrovet/ledger/batches/">Batches &amp; expiry</a><a href="/staff/agrovet/ledger/movements/">Stock movements</a><a href="/staff/agrovet/sales/">Sales</a><a href="/staff/agrovet/pos/">POS</a>{% if user.is_superuser %}<a href="/staff/agrovet/reports/">Reports</a>{% endif %}<a href="/staff/agrovet/enquiries/">Enquiries</a>{% endif %}
+{% if user.is_superuser %}<h6>Owner</h6><a href="/staff/finance/">Profit &amp; loss</a><a href="/staff/expenses/">Expenses</a><a href="/admin/">Products, users, settings</a>{% endif %}
+<h6>Site</h6><a href="/chemist/">Chemist storefront</a><a href="/agrovet/">Agrovet storefront</a>
+<form method="post" action="/staff/logout/">{% csrf_token %}<button>Log out ({{ user.username }})</button></form></aside>
+<section class="content">
+{% else %}
+<header class="hd"><div class="wrap"><a class="brand" href="/"><span class="mark">{% if dept == 'agrovet' %}&#127807;{% else %}+{% endif %}</span><span>{% if info.name %}{{ info.name }}{% else %}Friends Chemist &amp; Agrovet{% endif %}<small>Kibugua</small></span></a>
+<nav class="nav"><a href="/chemist/" {% if dept == 'chemist' %}class="on"{% endif %}>Chemist</a><a href="/agrovet/" {% if dept == 'agrovet' %}class="on"{% endif %}>Agrovet</a><a href="/contact/" {% if request.path == '/contact/' %}class="on"{% endif %}>Contact</a></nav>
+<form class="srch" method="get" action="/{{ dept|default:'chemist' }}/"><input name="q" placeholder="Search products..."></form>
+<a class="btn" href="tel:0716217239">Call 0716 217239</a><a href="/staff/login/" style="font-size:.85rem">Staff</a></div></header>
+<main>
+{% endif %}
+{% for m in messages %}<div class="msg">{{ m }}</div>{% endfor %}
+{% block content %}{% endblock %}
+{% if user.is_authenticated and request.path|slice:":7" == "/staff/" %}</section></div>
+{% else %}</main>
+<footer class="ft" id="contact"><div class="wrap"><div><b>{% if info.name %}{{ info.name }}{% else %}Friends Chemist &amp; Agrovet{% endif %}</b>Your Health. Our Priority.<br>Kibugua</div>
+<div><b>Quick links</b><a href="/chemist/">Chemist</a><a href="/agrovet/">Agrovet</a></div>
+<div><b>Customer service</b>Product enquiries are answered by phone or through the enquiry form on each product page. Call us to confirm availability.</div>
+<div><b>Get in touch</b><a href="tel:0716217239">0716 217239</a>Kibugua</div><div style="grid-column:1/-1">{% if show_map %}<b>Find us: Kibugua, Chuka, Tharaka-Nithi County</b><iframe title="Map of Kibugua" loading="lazy" style="width:100%;height:260px;border:0;border-radius:12px;margin-top:8px" src="https://www.openstreetmap.org/export/embed.html?bbox=37.6060%2C-0.3752%2C37.6260%2C-0.3552&layer=mapnik&marker=-0.36525%2C37.61597"></iframe>
+<a href="https://www.google.com/maps?q=-0.36525,37.61597" target="_blank" rel="noopener">Open in Google Maps</a> <small>(pin marks Kibugua village; exact shop location to be confirmed)</small>{% endif %}</div><small>&copy; {% now "Y" %} Friends Chemist &amp; Agrovet. Powered by Adalyn Technologies.</small></div></footer>{% endif %}
+{% if not user.is_authenticated or request.path|slice:":7" != "/staff/" %}<nav class="tabbar"><a href="/{{ dept|default:'chemist' }}/#products">Shop</a><a href="tel:0716217239">Call</a><a href="/contact/" {% if request.path == '/contact/' %}class="on"{% endif %}>Contact</a></nav>{% endif %}</body></html>

@@ -1,0 +1,7 @@
+{% extends "shop/base.html" %}{% block content %}<div class="wrap" style="padding-top:18px"><p><a href="/{{ dept }}/">&larr; Back to {{ info.name }}</a></p>
+<div class="split2" style="margin-top:0"><div class="card"><div class="ph" style="height:260px">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" style="max-height:260px">{% else %}{{ p.name|slice:":2"|upper }}{% endif %}</div></div>
+<div class="card"><h1 style="margin-top:0;color:var(--pd)">{{ p.name }}</h1><p>{{ p.category }} {{ p.pack }}</p>{% if p.status == 'demo' %}<span class="pill demo">DEMO listing: price and details to be verified</span>{% endif %}
+{% if p.sell_price %}<p class="stat price">KSh {{ p.sell_price }}</p>{% endif %}
+<p>{% if available %}<span class="pill ok">Usually available</span> Please confirm with the shop.{% else %}<span class="pill low">Ask us about availability</span>{% endif %}</p>
+{% if p.restricted %}<p class="warn">This product needs professional guidance. Please contact the shop.</p>{% endif %}
+<h3>Enquire about this product</h3><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn">Send enquiry</button></form></div></div></div>{% endblock %}

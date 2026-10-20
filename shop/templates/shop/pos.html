@@ -1,0 +1,21 @@
+{% extends "shop/base.html" %}{% block content %}<div class="crumb">{{ info.name }} / POS</div><h1>New sale</h1>
+<div class="split"><div class="card"><input id="q" placeholder="Search by SKU or name" style="width:100%" autofocus><div id="res"></div></div>
+<div class="card"><h3 style="margin-top:0">Cart</h3><div id="cart"><small>Cart is empty.</small></div><div class="row2"><span>Subtotal</span><b>KSh <span id="sub">0.00</span></b></div>
+{% if owner %}<div class="row2"><span>Discount (owner only)</span><input id="disc" type="number" min="0" step="0.01" value="0" style="width:100px"></div>{% endif %}
+<div class="row2"><span>Total</span><b class="stat">KSh <span id="tot">0.00</span></b></div>
+<p><select id="method">{% for k,v in methods %}<option value="{{ k }}">{{ v }}</option>{% endfor %}</select> <input id="ref" placeholder="Payment reference"></p>
+<p><small>Cash is recorded as received. M-Pesa, card and other payments are recorded manually and are NOT verified.</small></p>
+<button class="btn" id="go">Complete sale</button> <a class="btn alt" href="/staff/{{ dept }}/sales/">My sales</a><p id="err" class="bad"></p></div></div>
+<script>
+const dept="{{ dept }}",csrf="{{ csrf_token }}";let cart=[],key=crypto.randomUUID(),t;const $=id=>document.getElementById(id);
+function render(){const c=$('cart');c.textContent='';let sub=0;if(!cart.length)c.textContent='Cart is empty.';cart.forEach((i,ix)=>{sub+=i.price*i.qty;const d=document.createElement('div');d.className='row2';const s=document.createElement('span');s.textContent=`${i.name} @ ${i.price.toFixed(2)} = ${(i.price*i.qty).toFixed(2)}  x `;
+const n=document.createElement('input');n.type='number';n.min=1;n.max=i.stock;n.value=i.qty;n.style.width='60px';n.onchange=()=>{i.qty=Math.max(1,parseInt(n.value)||1);render()};const x=document.createElement('button');x.textContent='Remove';x.onclick=()=>{cart.splice(ix,1);render()};s.append(n);d.append(s,x);c.append(d)});
+const disc=$('disc')?parseFloat($('disc').value)||0:0;$('sub').textContent=sub.toFixed(2);$('tot').textContent=Math.max(0,sub-disc).toFixed(2)}
+if($('disc'))$('disc').oninput=render;
+$('q').oninput=()=>{clearTimeout(t);t=setTimeout(async()=>{const r=await fetch(`/staff/${dept}/pos/search/?q=`+encodeURIComponent($('q').value));const j=await r.json();const el=$('res');el.textContent='';
+j.results.forEach(p=>{const b=document.createElement('button');b.className='btn alt';b.style.cssText='display:block;width:100%;margin:4px 0;text-align:left';b.textContent=`${p.sku} | ${p.name} | KSh ${p.price} | stock ${p.stock}${p.demo?' | DEMO':''}`;
+b.onclick=()=>{const e=cart.find(i=>i.id===p.id);e?e.qty++:cart.push({id:p.id,name:p.name,price:parseFloat(p.price),qty:1,stock:p.stock});render()};el.append(b)})},250)};
+$('go').onclick=async()=>{$('err').textContent='';if(!cart.length)return;$('go').disabled=true;
+const r=await fetch(`/staff/${dept}/pos/sale/`,{method:'POST',headers:{'X-CSRFToken':csrf,'Content-Type':'application/json'},body:JSON.stringify({key,method:$('method').value,ref:$('ref').value,discount:$('disc')?$('disc').value:0,items:cart.map(i=>({id:i.id,qty:i.qty}))})});
+const j=await r.json();if(r.ok){location=j.receipt}else{$('err').textContent=j.error;$('go').disabled=false}};
+</script>{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "shop/base.html" %}{% block content %}{% if s.status == 'voided' %}<div class="msg" style="background:#fee2e2">VOIDED: {{ s.void_reason }}</div>{% endif %}
+<div class="rcpt"><h3 style="text-align:center">{{ info.name }}, {{ info.sub }}</h3><p style="text-align:center">Tel {{ phone }}</p>{% if s.is_demo %}<p style="text-align:center"><b>*** DEMO SALE ***</b></p>{% endif %}
+<p>Receipt: {{ s.receipt_no }}<br>{{ s.created|date:"d M Y H:i" }}<br>Cashier: {{ s.cashier }}</p><hr>
+{% for l in lines %}<div>{{ l.name }}<br>{{ l.qty }} x {{ l.unit_price }} = {{ l.line_total }}</div>{% endfor %}<hr>
+{% if s.discount %}<div>Subtotal {{ s.total|add:s.discount }}<br>Discount -{{ s.discount }}</div>{% endif %}<b>TOTAL KSh {{ s.total }}</b>
+<p>Paid by: {{ s.get_method_display }} {{ s.pay_ref }}<br>Payment: {{ s.get_pay_status_display }}</p>{% for rt in returns %}<div>Returned {{ rt.qty }} x {{ rt.line.name }}: refund {{ rt.refund }}</div>{% endfor %}<small>Not a tax invoice.</small></div>
+<p class="noprint" style="text-align:center"><button class="btn" onclick="print()">Print / reprint</button> <a class="btn alt" href="/staff/{{ s.dept }}/pos/">New sale</a> <a class="btn alt" href="/staff/{{ s.dept }}/sales/">Sales</a></p>
+{% if owner and s.status == 'completed' %}<div class="card noprint"><h3>Return items</h3><form method="post" action="/staff/receipt/{{ s.receipt_no }}/return/">{% csrf_token %}{% for l in lines %}{% if l.left > 0 %}<div class="row2"><span>{{ l.name }} (can return {{ l.left }})</span><input type="number" name="q_{{ l.pk }}" min="0" max="{{ l.left }}" value="0" style="width:70px"></div>{% endif %}{% endfor %}
+<p><input name="reason" placeholder="Reason (required)" required> <label><input type="checkbox" name="restock" value="1" checked> Return to stock</label> <button class="btn alt">Record return and refund</button></p></form>
+<h3>Void whole sale</h3><form method="post" action="/staff/receipt/{{ s.receipt_no }}/void/">{% csrf_token %}<input name="reason" placeholder="Reason (required)" required> <button class="btn alt">Void sale</button></form></div>{% endif %}{% endblock %}

@@ -1,0 +1,11 @@
+.venv/
+db.sqlite3
+media/
+staticfiles/
+__pycache__/
+*.pyc
+.env
+*.bak
+*.v8bak
+*.empty
+chemist_register.tsv

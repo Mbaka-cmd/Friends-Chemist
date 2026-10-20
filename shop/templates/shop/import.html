@@ -1,0 +1,3 @@
+{% extends "shop/base.html" %}{% block content %}<h1>Import Chemist register</h1><div class="card"><p>Upload the supplier register saved as tab-delimited text (.tsv/.txt). Preview first, then tick commit. Existing stock and approved prices are never overwritten.</p>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}<input type="file" name="file" required> <label><input type="checkbox" name="commit" value="1"> Commit changes (otherwise preview only)</label> <button class="btn">Run</button></form></div>
+{% if out %}<pre class="card" style="white-space:pre-wrap">{{ out }}</pre>{% endif %}<p><a href="/staff/chemist/inventory/">&larr; Back to stock management</a></p>{% endblock %}

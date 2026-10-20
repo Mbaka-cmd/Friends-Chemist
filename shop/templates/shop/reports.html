@@ -1,0 +1,8 @@
+{% extends "shop/base.html" %}{% block content %}<h1>{{ info.name }} reports</h1>
+<p>Showing: <b>{% if demo %}DEMO{% else %}REAL{% endif %}</b> sales &middot; <a href="?demo={% if demo %}0{% else %}1{% endif %}">switch</a></p>
+<div class="card"><p>Sales revenue: <b>KSh {{ revenue }}</b></p>
+{% if owner %}<p>Gross profit (lines with verified cost only, {{ costed }} of {{ all_lines }} lines): <b>KSh {{ gross }}</b></p><p>Inventory valuation (verified cost and verified products only): <b>KSh {{ valuation }}</b></p>
+<p><small>Net profit cannot be calculated: operating expenses are not recorded.</small></p>{% endif %}</div>
+<h3>By day</h3><table>{% for r in by_day %}<tr><td>{{ r.d }}</td><td>{{ r.n }} sales</td><td>KSh {{ r.t }}</td></tr>{% empty %}<tr><td>No sales.</td></tr>{% endfor %}</table>
+<h3>By payment method</h3><table>{% for r in by_m %}<tr><td>{{ r.method }}</td><td>{{ r.n }}</td><td>KSh {{ r.t }}</td></tr>{% endfor %}</table>
+<h3>Top products</h3><table>{% for r in top %}<tr><td>{{ r.name }}</td><td>{{ r.q }}</td><td>KSh {{ r.t }}</td></tr>{% endfor %}</table>{% endblock %}

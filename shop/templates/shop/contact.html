@@ -1,0 +1,18 @@
+{% extends "shop/base.html" %}{% block title %}Contact | Friends Chemist &amp; Agrovet{% endblock %}{% block content %}
+<div class="wrap" style="padding-top:26px"><h1 style="color:var(--pd);margin:0 0 6px">Contact us</h1><p>Friends Chemist and Friends Agrovet, Kibugua. Call, message or order on WhatsApp.</p>
+<div class="split2" style="margin-top:8px">
+<div class="card"><h3 style="margin-top:0">Carol Kithinji</h3><p>Friends Chemist and Friends Agrovet</p><p>Phone: <a href="tel:0716217239">{{ phone }}</a></p>
+<p><a class="btn wa" href="{{ wa }}" target="_blank" rel="noopener">Chat on WhatsApp</a> <a class="btn alt" href="tel:0716217239">Call now</a></p>
+<p>Location: Kibugua, Chuka, Tharaka-Nithi County.</p></div>
+<div class="card"><h3 style="margin-top:0">Order on WhatsApp</h3>
+<form id="of"><p><select id="of_shop"><option>Friends Chemist</option><option>Friends Agrovet</option></select></p><p><input id="of_name" placeholder="Your name" required style="width:100%"></p>
+<p><textarea id="of_items" rows="4" placeholder="What would you like? e.g. 2 x ORS, 1 x Hybrid Maize Seed 2 kg" required style="width:100%"></textarea></p><p><input id="of_note" placeholder="Anything else (optional)" style="width:100%"></p>
+<button class="btn wa">Send order on WhatsApp</button></form>
+<p><small>This opens WhatsApp with your message ready to send. The shop will confirm availability and price. Prescription medicines need a prescription or the pharmacist's advice.</small></p></div></div>
+
+</div>
+<script>
+document.getElementById('of').onsubmit=function(e){e.preventDefault();var g=function(i){return document.getElementById(i).value.trim()};
+var t='Hello '+g('of_shop')+', I would like to order:\n'+g('of_items')+'\nName: '+g('of_name')+(g('of_note')?'\nNote: '+g('of_note'):'')+'\nPlease confirm availability and price.';
+window.open('https://wa.me/{{ wa_num }}?text='+encodeURIComponent(t),'_blank','noopener')};
+</script>{% endblock %}
