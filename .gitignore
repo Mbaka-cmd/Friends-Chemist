@@ -10,3 +10,4 @@ __pycache__/
 *.empty
 chemist_register.tsv
 db.backup.sqlite3
+*.bak2
