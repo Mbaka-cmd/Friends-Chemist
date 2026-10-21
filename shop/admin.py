@@ -8,7 +8,7 @@ def unpublish(m, r, qs): qs.update(is_public=False)
 def verify(m, r, qs): qs.update(status='verified')
 @admin.register(Product)
 class PA(admin.ModelAdmin):
-    list_display = ('sku', 'name', 'dept', 'category', 'sell_price', 'suggested_price', 'status', 'is_public', 'active')
+    list_display = ('sku', 'name', 'dept', 'pack', 'category', 'sell_price', 'suggested_price', 'review_note', 'status', 'is_public', 'active')
     list_filter = ('dept', 'category', 'status', 'is_public', 'restricted', 'active'); search_fields = ('sku', 'name')
     list_editable = ('sell_price', 'category', 'is_public'); actions = [publish, unpublish, verify]; list_per_page = 100
 admin.site.register([Profile, Enquiry])

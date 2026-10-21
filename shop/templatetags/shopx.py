@@ -10,12 +10,33 @@ def icon(v):
     return next((e for k, e in M if k in v), '\U0001F4E6')
 @register.filter
 def shape(p):
-    n = (p.name + ' ' + p.category).upper()
+    n = (p.name + ' ' + p.category + ' ' + p.pack).upper()
     if p.dept == 'agrovet':
-        if any(k in n for k in ('FEED', 'MASH', 'MEAL', 'PELLET', 'FERTILIZER', 'SALT')): return 'bag'
+        if any(k in n for k in ('FEED', 'MASH', 'MEAL', 'PELLET', 'FERTILIZER', 'SALT', ' KG')): return 'bag'
         if any(k in n for k in (' 1 L', ' ML', 'VETERINARY')): return 'bottle'
         return 'packet'
     if any(k in n for k in ('CREAM', 'OINT', 'BALM', 'GEL', 'DEEP HEAT')): return 'tube'
     if any(k in n for k in ('SYP', 'SYRUP', 'SUSP', 'ML', 'WATER', 'SALT')): return 'bottle'
     if any(k in n for k in ('KISS', 'KIT')): return 'box'
     return 'pack'
+# ---- v7 ----
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+
+@register.filter
+def rich(text):
+    out, items = [], []
+    def flush():
+        if items: out.append('<ul>' + ''.join('<li>%s</li>' % escape(i) for i in items) + '</ul>'); items.clear()
+    for line in (text or '').splitlines():
+        s = line.strip()
+        if s.startswith(('* ', '- ')): items.append(s[2:]); continue
+        flush()
+        if s.startswith('## '): out.append('<h4>%s</h4>' % escape(s[3:]))
+        elif s: out.append('<p>%s</p>' % escape(s))
+    flush()
+    return mark_safe(''.join(out))
+
+@register.filter
+def kv(text):
+    return [tuple(x.strip() for x in l.split(':', 1)) for l in (text or '').splitlines() if ':' in l]

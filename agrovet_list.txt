@@ -1,0 +1,188 @@
+﻿Agr-001|Tingatinga|1 L|1600|
+Agr-002|Kolopa|1 L|2300|
+Agr-003|Weedal|1 L|650|Name spelling unclear in source
+Agr-004|Kaushia|1 L|650|Name spelling unclear in source
+Agr-005|Parastar|1 L||Price not clearly written
+Agr-006|Weedal|500 ml|400|Name spelling unclear in source
+Agr-007|Kaushia|500 ml|400|Name spelling unclear in source
+Agr-008|Tingatinga|1/2 L|1000|
+Agr-009|Kolopa|1/2 L|1250|
+Agr-010|Mr Bean|1 kg|1000|Product name partly unclear
+Agr-011|Kaushia|200 ml|250|
+Agr-012|Parastar|200 ml||Price not clearly written
+Agr-013|Weedal|200 ml|350|
+Agr-014|B-Safi|100 ml||Price not clearly written
+Agr-015|Booster|1 L|150|
+Agr-016|Booster|500 ml|100|
+Agr-017|Booster|1/2 L|100|
+Agr-018|DMAX|200 ml||Price not clearly written
+Agr-019|DMAX|800 ml||Price not clearly written
+Agr-020|Tingatinga|100 ml|1000|
+Agr-021|Escort|100 ml|150|
+Agr-022|Nillzan Plus|125 ml|350|
+Agr-023|Nillzan Plus|150 ml||Price not clearly written
+Agr-024|Force|125 ml||Price not clearly written
+Agr-025|Force|250 ml||Price not clearly written
+Agr-026|Multer cure|250 ml|35|Handwritten amount may be 35; verify
+Agr-027|Nillzan Plus|100 ml||
+Agr-028|Nillzan Plus|150 ml||
+Agr-029|Abedazole|40 ml|60|
+Agr-030|Abedazole|20 ml|40|
+Agr-031|Multer cure|40 ml|60|
+Agr-032|Escort|50 ml|350|
+Agr-033|Kantap|100 ml||Price not clearly written
+Agr-034|Pollysel|150 ml||Name spelling unclear; price not clear
+Agr-035|Pollysel|125 ml||Name spelling unclear; price not clear
+Agr-036|Aceral|100 ml||
+Agr-037|Sevin|20 g|200|
+Agr-038|Sevin|100 g|150|
+Agr-039|Sevin|50 g|100|
+Agr-040|Nyombe DCP|500 g|200|
+Agr-041|Cramax|15 g|150|
+Agr-042|Epsom salt|500 g|150|
+Agr-043|Epsom salt|250 g|100|
+Agr-044|Force One Plus||250|Pack size not clear
+Agr-045|Force One Super||300|Pack size not clear
+Agr-046|Nulcure|100 ml|150|
+Agr-047|Nillzan Plus|150 ml||Repeated in source; verify price
+Agr-048|Nillzan Plus|125 ml||Repeated in source; verify price
+Agr-049|Abedazole|40 ml|60|Repeated listing
+Agr-050|Abedazole|20 ml|40|Repeated listing
+Agr-051|Multer cure|40 ml|60|Repeated listing
+Agr-052|Abedazole|800 ml|100|
+Agr-053|Abedazole|150 ml|120|
+Agr-054|Piper|25 g|30|Name/price uncertain
+Agr-055|Xerilox|||Price not clearly written
+Agr-056|Acenex|25 g|130|
+Agr-057|Acten P|||Pack size and price unclear
+Agr-058|Epsom|25 g|100|
+Agr-059|Epsom soluble|25 g|100|
+Agr-060|Vermolag|||Price not clearly written
+Agr-061|Komix|||Price not clearly written
+Agr-062|Bietra|25 g|50|
+Agr-063|Diaze/Sterilone|600 cc|150|Name unclear; verify
+Agr-064|Durocap|200 ml|200|
+Agr-065|Kill/trap|per piece|80|
+Agr-066|Diverex/Expounder|200 ml|200|Name uncertain
+Agr-067|Passcode|106 g||Price not clearly written
+Agr-068|Fastgrow Veg|500 g||Price not clearly written
+Agr-069|Fastgrow Top|250 g||Price not clearly written
+Agr-070|Fastgrow Flower|500 g|500|
+Agr-071|Velman spray||500|
+Agr-072|Animalact|100 ml|150|
+Agr-073|Alisep|25 g||Price not clear
+Agr-074|Tolakay M Bag||200|
+Agr-075|Nikk egg booster|100 g|100|
+Agr-076|Bromix|100 g|100|
+Agr-077|Bromix anthelmintic|100 g||Price not clearly written
+Agr-078|Dawacrim Benda|per tablet|25|
+Agr-079|Extra medication (all)|per piece|20|Generic label as written
+Agr-080|Nobreen M cattle|500 g|400|
+Agr-081|Natrox K|250 g|250|
+Agr-082|Kaolin powder|500 g|150|
+Agr-083|DCP (pigment mix)|1 kg||Price not clearly written
+Agr-084|Diamond V 1000||250|
+Agr-085|Diamond V 100||250|
+Agr-086|Dawa-cleane|200 ml|250|Name uncertain
+Agr-087|Masitite ketup|500 ml||Name uncertain
+Agr-088|Masitite ketup|100 ml||Name uncertain
+Agr-089|Animatic CAL|1 L|850|
+Agr-090|Animatic CAL|1/2 L|450|
+Agr-091|Twelve|500 ml|750|
+Agr-092|Keptrain|1 L|600|
+Agr-093|Keptrain|500 ml||Price not clearly written
+Agr-094|CKL Milking cow|1 kg|450|
+Agr-095|CKL Milking cow|250 g|280|
+Agr-096|CKL Milking cow|100 g|70|
+Agr-097|CKL DCP|500 g|300|
+Agr-098|CKL DCP|250 g|150|
+Agr-099|Multivitamin supplement cow|200 g|250|
+Agr-100|Ngombemix mineral lick|5 kg|350|
+Agr-101|Ngombemix mineral block|2 kg|250|
+Agr-102|Ngombemix mineral block|1 kg|150|
+Agr-103|Ngombemix mineral block|500 g|170|
+Agr-104|Ngombemix mineral block|4 kg|300|
+Agr-105|Ngombemix mineral block|5 kg|300|
+Agr-106|Ngombemix mineral block|2 kg|300|Repeated listing; source price varies
+Agr-107|Ngombemix mineral block|1 kg|170|Repeated listing; source price varies
+Agr-108|Ngombemix mineral block|500 g|150|Repeated listing; source price varies
+Agr-109|CKL block|5 kg|750|
+Agr-110|CKL block|2 kg||Price not clearly written
+Agr-111|Mwet Farm gloves|||
+Agr-112|Needle|18 g||
+Agr-113|Syringe|20 ml||
+Agr-114|Syringes|10 ml||
+Agr-115|Abedazole|20 ml||
+Agr-116|Milk replacer|2 kg||
+Agr-117|Feeder|1 kg||
+Agr-118|Feeder|3 kg||
+Agr-119|Feeder|6 kg||
+Agr-120|Feeder|9 kg||
+Agr-121|Epsom salt|500 g||
+Agr-122|Epsom salt|250 g||
+Agr-123|Vitamin mix|2 kg||
+Agr-124|Vitamin mix|1 kg||
+Agr-125|Vitax|1 kg||
+Agr-126|Vitax|2 kg||
+Agr-127|Wadex|||
+Agr-128|Vitamin mix|500 g||
+Agr-129|Maclick Plus|5 kg|450|
+Agr-130|Maclick Plus|2 kg|350|
+Agr-131|Maclick Plus|1 kg|250|
+Agr-132|Maclick Super|5 kg||
+Agr-133|Maclick Super|2 kg|550|
+Agr-134|Maclick Super|1 kg|300|
+Agr-135|Maclick Beef|2 kg|350|
+|Macklick Beef|5 kg||
+Agr-136|Maclick Beef|500 g|200|
+|Macklick Dry cow|5 kg||
+Agr-137|Maclick Dry|2 kg|550|
+Agr-138|Maclick Dry|1 kg|300|
+Agr-139|Extra Magalicks|||
+Agr-140|Extra Magalicks|||
+Agr-141|Kraal salt|1 kg|200|
+Agr-142|Extra meal lick|||
+Agr-143|Kupa/repacow|1 kg||Name/price unclear
+Agr-144|Milk replacer cow|1 kg||
+Agr-145|Ngombemix Ngoma|5 kg||
+Agr-146|Ngombemix Ngoma|2 kg|150|
+Agr-147|Ngombemix Ngoma|1 kg||
+Agr-148|Ngombemix maize|2 kg||
+Agr-149|Ngombemix maize|5 kg||
+Agr-150|Ngombemix maize|1 kg||
+Agr-151|Twiga lick manure|1 kg||
+Agr-152|Twiga lick manure|2 kg||
+Agr-153|Twiga lick manure|5 kg||
+Agr-154|Twiga lick manure|1 kg||Repeated listing
+Agr-155|Twiga lick manure|2 kg||Repeated listing
+Agr-156|Twiga lick manure|5 kg||Repeated listing
+Agr-157|Animatic cattle mix|1 kg||
+Agr-158|Malava chapp|1 kg||Name unclear
+Agr-159|Mawua chapp|2 kg||Name unclear
+Agr-160|Twiga stock lick|2 kg||
+Agr-161|Magical pig|1 kg|250|
+Agr-162|Udaminx|1 kg||
+Agr-163|Udaminx|2 kg||
+Agr-164|Udaminx|5 kg||
+Agr-165|Mwendame mineral lick|1 kg||
+Agr-166|Beemix|5 kg|500|
+Agr-167|Saline|100 ml|250|
+Agr-168|Ngombemix DCP|250 g|150|
+Agr-169|Ngombemix DCP|1 kg||
+Agr-170|Ngombemix DCP copper sulphate||450|
+Agr-171|Maxilick|10 kg|600|
+Agr-172|Truvet|5 kg|500|
+Agr-173|Piperazine||100|
+Agr-174|Vital|1 kg|250|
+Agr-175|Vital|500 g|400|
+Agr-176|Vital|1 kg|300|
+Agr-177|Vital|500 g|350|
+Agr-178|Udder booster|500 g|350|
+Agr-179|Twiga lick max|2 kg|450|
+Agr-180|Twiga lick max|1 kg|250|
+Agr-181|Twiga lick max|1 kg|250|Repeated listing
+Agr-182|Twiga lick max|2 kg|500|Repeated listing; price varies
+Agr-183|Milk replacer|2 kg|150|
+Agr-184|Milk replacer|1 kg|600|
+Agr-185|Vitamin mix|1 kg|250|
+Agr-186|Vitamin mix|500 g|420|

@@ -9,3 +9,4 @@ __pycache__/
 *.v8bak
 *.empty
 chemist_register.tsv
+db.backup.sqlite3

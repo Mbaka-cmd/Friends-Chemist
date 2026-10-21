@@ -1,6 +1,16 @@
-{% extends "shop/base.html" %}{% block content %}<div class="wrap" style="padding-top:18px"><p><a href="/{{ dept }}/">&larr; Back to {{ info.name }}</a></p>
+{% extends "shop/base.html" %}
+{% load pack_sizes %}{% block content %}<div class="wrap" style="padding-top:18px"><p><a href="/{{ dept }}/">&larr; Back to {{ info.name }}</a></p>
 <div class="split2" style="margin-top:0"><div class="card"><div class="ph" style="height:260px">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" style="max-height:260px">{% else %}{{ p.name|slice:":2"|upper }}{% endif %}</div></div>
-<div class="card"><h1 style="margin-top:0;color:var(--pd)">{{ p.name }}</h1><p>{{ p.category }} {{ p.pack }}</p>{% if p.status == 'demo' %}<span class="pill demo">DEMO listing: price and details to be verified</span>{% endif %}
+<div class="card"><h1 style="margin-top:0;color:var(--pd)">{{ p.name }}</h1>
+{% product_sizes info as sizes %}
+{% if sizes|length > 1 %}
+<div class="chips" style="margin:.6rem 0">
+  <b style="margin-right:.5rem">Choose size:</b>
+  {% for s in sizes %}
+    <a class="chip {% if s.pk == info.pk %}on{% endif %}" href="/{{ s.dept }}/{{ s.sku }}/">{{ s.pack|default:"Standard" }}{% if s.sell_price %} - KSh {{ s.sell_price|floatformat:0 }}{% endif %}</a>
+  {% endfor %}
+</div>
+{% endif %}<p>{{ p.category }} {{ p.pack }}</p>{% if p.status == 'demo' %}<span class="pill demo">DEMO listing: price and details to be verified</span>{% endif %}
 {% if p.sell_price %}<p class="stat price">KSh {{ p.sell_price }}</p>{% endif %}
 <p>{% if available %}<span class="pill ok">Usually available</span> Please confirm with the shop.{% else %}<span class="pill low">Ask us about availability</span>{% endif %}</p>
 {% if p.restricted %}<p class="warn">This product needs professional guidance. Please contact the shop.</p>{% endif %}
