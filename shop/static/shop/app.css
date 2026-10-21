@@ -97,3 +97,23 @@ body.agrovet .help{background:var(--pd);color:#fff}body.agrovet .help .btn{backg
 /*v7*/
 .btn.wa{background:#25d366;color:#053d1c}
 
+/* ===== 3D agrovet hero ===== */
+.art:has(.scene3d){overflow:visible}
+.scene3d{position:relative;width:100%;max-width:440px;height:380px;margin-left:auto;perspective:1100px}
+.scene3d .orb{position:absolute;inset:18px 38px 40px;border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,#ffffff 0,#dcefd5 38%,#8fc08a 78%,#5d9a63 100%);
+  box-shadow:inset -34px -44px 70px rgba(20,83,45,.28),0 36px 60px rgba(20,83,45,.22)}
+.scene3d .ring{position:absolute;left:50%;top:46%;width:0;height:0;transform-style:preserve-3d;
+  transform:rotateX(-9deg);animation:ring3d 30s linear infinite}
+.scene3d:hover .ring{animation-play-state:paused}
+@keyframes ring3d{to{transform:rotateX(-9deg) rotateY(360deg)}}
+.scene3d figure{position:absolute;margin:0;width:118px;height:148px;left:-59px;top:-74px;
+  transform:rotateY(calc(var(--i) * 360deg / var(--n))) translateZ(185px);
+  background:#fff;border-radius:16px;padding:8px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;box-shadow:0 16px 30px rgba(0,0,0,.22),0 0 0 1px rgba(20,83,45,.08)}
+.scene3d figure img{max-width:100%;max-height:100px;object-fit:contain;display:block}
+.scene3d figcaption{font-size:.68rem;font-weight:700;color:#14532d;text-align:center;margin-top:6px;line-height:1.15}
+.scene3d .floor{position:absolute;left:50%;bottom:8px;width:300px;height:36px;margin-left:-150px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(20,83,45,.35),transparent 70%);filter:blur(4px)}
+@media (max-width:700px){.scene3d{height:300px;transform:scale(.78);transform-origin:top center}}
+@media (prefers-reduced-motion:reduce){.scene3d .ring{animation:none}}

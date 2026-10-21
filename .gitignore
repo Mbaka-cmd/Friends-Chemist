@@ -11,3 +11,4 @@ __pycache__/
 chemist_register.tsv
 db.backup.sqlite3
 *.bak2
+*.bak3

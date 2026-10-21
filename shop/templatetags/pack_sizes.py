@@ -44,3 +44,20 @@ def product_sizes(p):
             seen.add(k)
             out.append(s)
     return out
+
+
+@register.simple_tag
+def hero_ring(dept="agrovet", n=8):
+    seen, out = set(), []
+    qs = (Product.objects
+          .filter(dept=dept, is_public=True, active=True)
+          .exclude(image="")
+          .order_by("?"))
+    for p in qs:
+        if p.image.name in seen:
+            continue
+        seen.add(p.image.name)
+        out.append(p)
+        if len(out) >= n:
+            break
+    return out
