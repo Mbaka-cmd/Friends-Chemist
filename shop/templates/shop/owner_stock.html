@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stock management - {{ dept_name }}</title>
+<style>
+:root{--g:#0e4a33;--g2:#14532d;--g3:#1f7a45;--bg:#f3f6f4;--ink:#14221a;--mut:#6b7a70;--line:#e3e9e4;--ok:#1f8f52;--warn:#b7791f;--bad:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.45 Inter,system-ui,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);display:flex;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.sb{width:248px;flex:none;background:var(--g);color:#cfe3d6;padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{font-weight:800;font-size:1.05rem;color:#fff;margin:0 8px 2px}.brand-s{font-size:.72rem;color:#9fc4ae;margin:0 8px 18px}
+.sb h6{margin:18px 10px 6px;font-size:.66rem;letter-spacing:.14em;color:#7fae93}
+.sb a.nv{display:block;padding:9px 12px;border-radius:10px;color:#d9eadf;font-size:.9rem}
+.sb a.nv:hover{background:rgba(255,255,255,.07)}
+.sb a.nv.on{background:#fff;color:var(--g2);font-weight:700}
+.me{margin:22px 10px 0;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);font-size:.8rem}
+.me a{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.1)}
+main{flex:1;min-width:0;padding:26px 30px 60px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px}
+.top h1{margin:0;font-size:1.6rem;letter-spacing:-.01em}
+.top p{margin:4px 0 0;color:var(--mut)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:12px;font-weight:600;font-size:.88rem;border:1px solid var(--line);background:#fff;cursor:pointer}
+.btn:hover{border-color:#b9cbbf}
+.btn.pri{background:var(--g2);color:#fff;border-color:var(--g2)}.btn.pri:hover{background:var(--g3)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--mut);font-weight:500}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg a{padding:7px 14px;border-radius:9px;font-weight:600;font-size:.85rem;color:var(--mut)}
+.seg a.on{background:var(--g2);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0 8px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;transition:box-shadow .2s,transform .2s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(20,83,45,.5)}
+.kpi small{color:var(--mut);display:block}.kpi b{font-size:1.7rem;letter-spacing:-.02em}
+.kpi.low b{color:var(--warn)}.kpi.out b{color:var(--bad)}.kpi.ok b{color:var(--ok)}
+.note{margin:14px 0 0;padding:12px 16px;border-radius:14px;background:#fff7e0;border:1px solid #f1deaa;color:#7a5a12}
+.bar{position:sticky;top:0;z-index:5;margin:18px -30px 0;padding:12px 30px;background:rgba(243,246,244,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tools input[type=search],.tools select{padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit}
+.tools input[type=search]{flex:1;min-width:220px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:.82rem;cursor:pointer;color:#3d5045}
+.chip b{margin-left:6px;color:var(--mut);font-weight:600}
+.chip.on{background:var(--g2);border-color:var(--g2);color:#fff}.chip.on b{color:#cfe3d6}
+.cnt{margin-left:auto;color:var(--mut);font-size:.82rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;margin-top:16px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:980px}
+th{position:sticky;top:0;background:#f8faf8;text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid #eef2ee;vertical-align:middle}
+tr[hidden]{display:none}
+tbody tr:hover{background:#fafcfa}
+.pr{display:flex;gap:12px;align-items:center;min-width:240px}
+.th{flex:none;width:48px;height:48px;border-radius:12px;background:#eef4ea;display:grid;place-items:center;overflow:hidden;font-weight:800;color:var(--g2)}
+.th img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.pr b{display:block;font-weight:650}.pr small{color:var(--mut)}
+.tag{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#eef;color:#556;font-size:.66rem;font-weight:700}
+.money{display:flex;align-items:center;gap:4px;color:var(--mut)}
+input.ed{width:92px;padding:7px 9px;border:1px solid transparent;border-radius:9px;background:#f4f7f4;font:inherit;font-weight:600;color:var(--ink)}
+input.ed:hover{border-color:var(--line)}
+input.ed:focus{outline:none;border-color:var(--g3);background:#fff;box-shadow:0 0 0 3px rgba(31,122,69,.15)}
+input.ed.rl{width:70px}
+input.ed.err{border-color:var(--bad);background:#fff3f1}
+input.ed.saved{border-color:var(--ok);background:#effaf3}
+.qty{font-weight:800;font-size:1.05rem}
+.pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.74rem;font-weight:700}
+.pill.ok{background:#e4f6ea;color:#15733f}.pill.low{background:#fff1d6;color:#9a6a0e}.pill.out{background:#fde8e5;color:#b13024}
+.sw{position:relative;display:inline-block;width:40px;height:22px}
+.sw input{opacity:0;width:0;height:0}
+.sw span{position:absolute;inset:0;border-radius:999px;background:#cfd8d2;transition:.2s;cursor:pointer}
+.sw span::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+span{background:var(--g3)}.sw input:checked+span::after{left:21px}
+.rowact{display:flex;gap:6px}
+.rowact a{padding:6px 11px;border-radius:9px;border:1px solid var(--line);font-size:.78rem;font-weight:600;background:#fff}
+.rowact a:hover{border-color:var(--g3);color:var(--g2)}
+.empty{padding:44px;text-align:center;color:var(--mut)}
+.toast{position:fixed;right:22px;bottom:22px;background:var(--g2);color:#fff;padding:11px 18px;border-radius:12px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;font-weight:600}
+.toast.show{opacity:1;transform:none}.toast.bad{background:var(--bad)}
+@media(max-width:900px){body{flex-direction:column}.sb{width:100%;height:auto;position:static}main{padding:18px 14px 50px}.bar{margin:14px -14px 0;padding:10px 14px}}
+</style></head><body>
+
+<aside class="sb">
+  <div class="brand">AdGrovet</div><div class="brand-s">Health &amp; Farm Solutions</div>
+  {% for g in nav %}{% if g.title %}<h6>{{ g.title }}</h6>{% endif %}{% for it in g.items %}<a class="nv {% if it.2 %}on{% endif %}" href="{{ it.1 }}">{{ it.0 }}</a>{% endfor %}{% endfor %}
+  <div class="me">Signed in as <b>{{ username }}</b><br><a href="{{ logout_url }}">Log out</a></div>
+</aside>
+
+<main>
+  <div class="top">
+    <div><h1>Stock management</h1><p>{{ dept_name }} (Kibugua). Click any price or reorder level to edit it. Changes save instantly.</p></div>
+    <div class="acts">
+      <div class="seg"><a href="/staff/chemist/inventory/" class="{% if dept == 'chemist' %}on{% endif %}">Chemist</a><a href="/staff/agrovet/inventory/" class="{% if dept == 'agrovet' %}on{% endif %}">Agrovet</a></div>
+      <a class="btn pri" href="{{ add_url }}">+ Add product</a>
+      {% if receive_url %}<a class="btn" href="{{ receive_url }}">Receive stock</a>{% endif %}
+      <a class="btn" href="{{ csv_url }}">Export CSV</a>
+      <a class="btn ghost" href="{{ classic_url }}">Classic view</a>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi" data-f="all"><small>Total products</small><b id="k-all">{{ counts.total }}</b></div>
+    <div class="kpi ok" data-f="ok"><small>In stock</small><b id="k-ok">{{ counts.ok }}</b></div>
+    <div class="kpi low" data-f="low"><small>Low stock</small><b id="k-low">{{ counts.low }}</b></div>
+    <div class="kpi out" data-f="out"><small>Out of stock</small><b id="k-out">{{ counts.out }}</b></div>
+    <div class="kpi" data-f="noprice"><small>Missing price</small><b id="k-noprice">{{ counts.noprice }}</b></div>
+    <div class="kpi" data-f="hidden"><small>Hidden from website</small><b id="k-hidden">{{ counts.hidden }}</b></div>
+  </div>
+
+  {% if all_out %}<div class="note"><b>No stock quantities recorded yet.</b> Every product shows as out of stock until you receive stock{% if receive_url %} on the <a href="{{ receive_url }}"><u>Receive / adjust</u></a> page{% endif %}.</div>{% endif %}
+
+  <div class="bar">
+    <div class="tools">
+      <input type="search" id="q" placeholder="Search name, SKU, pack or category   ( press / )" autocomplete="off">
+      <select id="cat"><option value="">All categories</option>{% for c in cats %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</select>
+      <select id="sort"><option value="name">Sort: Name A-Z</option><option value="stock">Sort: Stock, low first</option><option value="price">Sort: Price, low first</option><option value="cat">Sort: Category</option></select>
+      <span class="cnt">Showing <b id="shown">{{ counts.total }}</b> of {{ counts.total }}</span>
+    </div>
+    <div class="chips">
+      <span class="chip on" data-f="all">All<b id="c-all">{{ counts.total }}</b></span>
+      <span class="chip" data-f="ok">In stock<b id="c-ok">{{ counts.ok }}</b></span>
+      <span class="chip" data-f="low">Low<b id="c-low">{{ counts.low }}</b></span>
+      <span class="chip" data-f="out">Out of stock<b id="c-out">{{ counts.out }}</b></span>
+      <span class="chip" data-f="noprice">No price<b id="c-noprice">{{ counts.noprice }}</b></span>
+      <span class="chip" data-f="hidden">Hidden<b id="c-hidden">{{ counts.hidden }}</b></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>Product</th><th>Category</th><th>Buy price</th><th>Sell price</th><th>In stock</th><th>Reorder at</th><th>Status</th><th>On website</th><th></th></tr></thead>
+      <tbody id="tb">
+      {% for r in rows %}{% with p=r.p %}
+        <tr data-id="{{ p.pk }}" data-s="{{ p.name|lower }} {{ p.sku|lower }} {{ p.pack|lower }} {{ p.category|lower }}" data-name="{{ p.name|lower }} {{ p.pack|lower }}" data-cat="{{ p.category }}" data-st="{{ r.st }}" data-qty="{{ r.qty }}" data-price="{{ p.sell_price|floatformat:'-2' }}" data-noprice="{% if r.noprice %}1{% else %}0{% endif %}" data-hidden="{% if r.hidden %}1{% else %}0{% endif %}">
+          <td><div class="pr"><div class="th">{% if p.image %}<img src="{{ p.image.url }}" alt="" loading="lazy">{% else %}{{ p.name|slice:":1"|upper }}{% endif %}</div><div><b>{{ p.name }}{% if p.status == 'demo' %}<span class="tag">Demo</span>{% endif %}</b><small>{{ p.sku }}{% if p.pack %} &middot; {{ p.pack }}{% endif %}</small></div></div></td>
+          <td>{{ p.category }}</td>
+          <td><div class="money">KSh <input class="ed" type="number" step="0.01" min="0" inputmode="decimal" data-field="buy_price" value="{{ p.buy_price|floatformat:'-2' }}" placeholder="-"></div></td>
+          <td><div class="money">KSh <input class="ed" type="number" step="0.01" min="0" inputmode="decimal" data-field="sell_price" value="{{ p.sell_price|floatformat:'-2' }}" placeholder="Set price"></div></td>
+          <td><span class="qty">{{ r.qty }}</span></td>
+          <td><input class="ed rl" type="number" step="1" min="0" inputmode="numeric" data-field="reorder_level" value="{{ p.reorder_level|default_if_none:0 }}"></td>
+          <td><span class="pill {{ r.st }}">{% if r.st == 'ok' %}In stock{% elif r.st == 'low' %}Low stock{% else %}Out of stock{% endif %}</span></td>
+          <td><label class="sw"><input class="ed" type="checkbox" data-field="is_public" {% if p.is_public %}checked{% endif %}><span></span></label></td>
+          <td><div class="rowact">{% if receive_url %}<a href="{{ receive_url }}">Receive</a>{% endif %}<a href="{{ change_base }}{{ p.pk }}/change/">Edit</a></div></td>
+        </tr>
+      {% endwith %}{% endfor %}
+      </tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No products match. Try a different search or filter.</div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+var CSRF="{{ csrf }}";
+var $=function(s){return document.querySelector(s)}, $$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+var tb=$('#tb'), rows=$$('#tb tr'), flt='all';
+var q=$('#q'), cat=$('#cat'), sortEl=$('#sort');
+
+function counts(){
+  var c={all:rows.length,ok:0,low:0,out:0,noprice:0,hidden:0};
+  rows.forEach(function(r){c[r.dataset.st]++; if(r.dataset.noprice==='1')c.noprice++; if(r.dataset.hidden==='1')c.hidden++;});
+  for(var k in c){var a=$('#c-'+k), b=$('#k-'+k); if(a)a.textContent=c[k]; if(b)b.textContent=c[k];}
+}
+function apply(){
+  var term=q.value.trim().toLowerCase(), cv=cat.value, n=0;
+  rows.forEach(function(r){
+    var okq=!term||r.dataset.s.indexOf(term)>-1;
+    var okc=!cv||r.dataset.cat===cv;
+    var okf=flt==='all'||r.dataset.st===flt||(flt==='noprice'&&r.dataset.noprice==='1')||(flt==='hidden'&&r.dataset.hidden==='1');
+    var show=okq&&okc&&okf; r.hidden=!show; if(show)n++;
+  });
+  $('#shown').textContent=n; $('#empty').hidden=n>0;
+  $$('.chip').forEach(function(c){c.classList.toggle('on',c.dataset.f===flt)});
+}
+function order(){
+  var v=sortEl.value;
+  var key={name:function(r){return r.dataset.name},
+           price:function(r){return parseFloat(r.dataset.price||'1e12')},
+           stock:function(r){return parseFloat(r.dataset.qty)},
+           cat:function(r){return r.dataset.cat+r.dataset.name}}[v];
+  rows.sort(function(a,b){var x=key(a),y=key(b);return x<y?-1:x>y?1:0});
+  rows.forEach(function(r){tb.appendChild(r)});
+}
+function toast(msg,bad){var t=$('#toast');t.textContent=msg;t.className='toast show'+(bad?' bad':'');clearTimeout(toast.h);toast.h=setTimeout(function(){t.className='toast'},1800)}
+function setStatus(r){
+  var qty=parseFloat(r.dataset.qty), rl=parseFloat(r.querySelector('[data-field=reorder_level]').value||0);
+  var st=qty<=0?'out':(qty<=rl?'low':'ok'); r.dataset.st=st;
+  var p=r.querySelector('.pill'); p.className='pill '+st; p.textContent={ok:'In stock',low:'Low stock',out:'Out of stock'}[st];
+}
+function save(i){
+  var r=i.closest('tr'), isBox=i.type==='checkbox';
+  var body={id:r.dataset.id,field:i.dataset.field,value:isBox?i.checked:i.value};
+  fetch(location.pathname,{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':CSRF,'X-Stock-Edit':'1'},body:JSON.stringify(body)})
+  .then(function(res){return res.json().then(function(j){return {ok:res.ok&&j.ok,j:j}})})
+  .then(function(o){
+    if(!o.ok)throw new Error(o.j.error||'Could not save');
+    if(!isBox){i.dataset.v=i.value;i.classList.remove('err');i.classList.add('saved');setTimeout(function(){i.classList.remove('saved')},900)}
+    if(body.field==='sell_price'){r.dataset.price=i.value;r.dataset.noprice=i.value===''?'1':'0'}
+    if(body.field==='reorder_level')setStatus(r);
+    if(body.field==='is_public')r.dataset.hidden=i.checked?'0':'1';
+    counts();apply();toast('Saved');
+  })
+  .catch(function(e){
+    if(isBox)i.checked=!i.checked; else{i.value=i.dataset.v||'';i.classList.add('err')}
+    toast(e.message,true);
+  });
+}
+$$('input.ed').forEach(function(i){
+  i.dataset.v=i.value;
+  i.addEventListener('change',function(){save(i)});
+  i.addEventListener('keydown',function(e){if(e.key==='Enter')i.blur()});
+});
+$$('.chip,.kpi').forEach(function(c){c.addEventListener('click',function(){flt=c.dataset.f;apply();window.scrollTo({top:$('.bar').offsetTop-10,behavior:'smooth'})})});
+q.addEventListener('input',apply); cat.addEventListener('change',apply); sortEl.addEventListener('change',order);
+document.addEventListener('keydown',function(e){if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();q.focus()}});
+order();apply();
+})();
+</script>
+</body></html>
