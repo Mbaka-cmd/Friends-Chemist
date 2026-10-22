@@ -12,9 +12,15 @@
 <h2 class="sec" id="products">{% if q or cat %}Results{% else %}Featured products{% endif %} <small style="font-weight:400;font-size:.8rem">({{ gp.paginator.count }})</small></h2>
 <div class="chips"><a class="chip {% if not cat %}on{% endif %}" href="?#products">All</a>{% for c in cats %}<a class="chip {% if c == cat %}on{% endif %}" href="?cat={{ c|urlencode }}#products">{{ c }}</a>{% endfor %}</div>
 <form method="get" class="sub"><input name="q" value="{{ q }}" placeholder="Search products" style="min-width:240px"><button class="btn">Search</button></form>
-<div class="grid">{% for p in gp.object_list %}<a class="pc" href="/{{ dept }}/{{ p.sku }}/"><div class="ph sh-{{ p|shape }}">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}">{% else %}<svg><use href="#i-{{ p|shape }}"/></svg>{% endif %}{% if p.status == 'demo' %}<em class="rib">DEMO</em>{% endif %}</div>
-<strong>{{ p.name }}</strong>{% if p.sizes > 1 %}<small>{{ p.sizes }} sizes available</small>{% if p.from_price %}<span class="price">From KSh {{ p.from_price|floatformat:0 }}</span>{% endif %}{% else %}<small>{{ p.pack }}</small>{% if p.sell_price %}<span class="price">KSh {{ p.sell_price|floatformat:0 }}</span>{% endif %}{% endif %}
-<div class="row">{% if p.sellable > 0 %}<span class="pill ok">In stock</span>{% else %}<span class="pill low">Ask us</span>{% endif %}<span class="eb">Enquire</span></div></a>
+<div class="grid">{% for p in gp.object_list %}<a class="pc2" style="--k:{{ forloop.counter0 }}" href="/{{ dept }}/{{ p.sku }}/">
+<div class="pc2-img">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">{% else %}<span class="pc2-ph">{{ p.name|slice:":1"|upper }}</span>{% endif %}{% if p.sizes > 1 %}<em class="pc2-badge">{{ p.sizes }} sizes</em>{% endif %}</div>
+<div class="pc2-b">
+<span class="pc2-cat">{{ p.category }}</span>
+<strong>{{ p.name }}</strong>
+<small>{% if p.sizes > 1 %}Choose your pack size{% elif p.pack %}{{ p.pack }}{% else %}&nbsp;{% endif %}</small>
+<span class="pc2-av{% if p.sellable > 0 %} ok{% endif %}">{% if p.sellable > 0 %}In stock{% else %}Call to confirm{% endif %}</span>
+<div class="pc2-f"><div class="pc2-pr">{% if p.sizes > 1 %}{% if p.from_price %}<i>From</i>KSh {{ p.from_price|floatformat:0 }}{% else %}<i>Price on request</i>{% endif %}{% else %}{% if p.sell_price %}KSh {{ p.sell_price|floatformat:0 }}{% else %}<i>Price on request</i>{% endif %}{% endif %}</div><span class="pc2-go">&rarr;</span></div>
+</div></a>
 {% empty %}<p>No products match. Try another search or category.</p>{% endfor %}</div>
 {% if gp.paginator.num_pages > 1 %}<div class="pg">{% if gp.has_previous %}<a href="?q={{ q|urlencode }}&cat={{ cat|urlencode }}&page={{ gp.previous_page_number }}#products">&larr; Prev</a>{% endif %}<b>{{ gp.number }} / {{ gp.paginator.num_pages }}</b>{% if gp.has_next %}<a href="?q={{ q|urlencode }}&cat={{ cat|urlencode }}&page={{ gp.next_page_number }}#products">Next &rarr;</a>{% endif %}</div>{% endif %}
 {% if guided %}<details class="guided"><summary>Prescription and pharmacist-guided medicines ({{ guided|length }}): call or visit the pharmacy</summary><p>These are not sold online and have no listed price. Some need a prescription or the pharmacist's advice. Call 0716 217239 to ask.</p><div class="gl">{% for g in guided %}<span>{{ g.name }}</span>{% endfor %}</div></details>{% endif %}
