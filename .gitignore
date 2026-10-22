@@ -12,3 +12,4 @@ chemist_register.tsv
 db.backup.sqlite3
 *.bak2
 *.bak3
+*.bak*

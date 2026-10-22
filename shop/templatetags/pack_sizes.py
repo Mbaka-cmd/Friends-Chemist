@@ -61,3 +61,10 @@ def hero_ring(dept="agrovet", n=8):
         if len(out) >= n:
             break
     return out
+
+
+@register.simple_tag
+def cat_info(dept, cat):
+    qs = Product.objects.filter(dept=dept, category=cat, is_public=True, active=True, restricted=False)
+    photo = qs.exclude(image="").order_by("?").first()
+    return {"count": qs.count(), "photo": photo}
