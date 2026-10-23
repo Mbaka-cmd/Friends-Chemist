@@ -253,3 +253,105 @@ def wa_link(p=None, text=""):
         pack = " (%s)" % p.pack if (p.pack and not cn) else ""
         text = "Hello Friends %s, I would like to enquire about %s%s." % ((p.dept or "").title(), name, pack)
     return "https://wa.me/%s?text=%s" % (globals().get("WA_NUMBER", "254716217239"), quote(text))
+
+# ---- v4 overrides: customer-facing names, fixed category covers ----
+from django.contrib.staticfiles import finders  # v4fix
+try:
+    _static
+except NameError:
+    from django.templatetags.static import static as _static
+import re
+from urllib.parse import quote
+
+# One clean photo per category cover (exact product names). Edit freely.
+COVER_PICKS = {
+    "Cough & Cold": "AMBROX 100ML SYP",
+    "Family Planning & Wellness": "PREGNANCY TEST KIT ASTRA 1s",
+    "Pain Relief": "PANADOL EXTRA TABS 100s",
+    "Skin Care & Creams": "EPIDERM CREAM 15GMS",
+    "Stomach & Digestive": "GASTRO GEL 100ML",
+    "Vitamins & Supplements": "CYPRO B PLUS SYRUP 200ML",
+}
+
+
+def _shown(p):
+    return getattr(p, "public_name", "") or (p.name or "")
+
+
+def _group(items):
+    groups = {}
+    for p in items:
+        g = groups.setdefault(_fam_key(p), {"rep": p, "m": [], "prices": []})
+        g["m"].append(p)
+        if not g["rep"].image and p.image:
+            g["rep"] = p
+        if p.sell_price:
+            g["prices"].append(p.sell_price)
+    out = []
+    for g in groups.values():
+        rep, m = g["rep"], g["m"]
+        if rep.dept == "chemist":
+            rep.sizes = len(m)
+            rep.card_name = _fam_title(rep) if len(m) > 1 else _shown(rep)
+        else:
+            rep.sizes = len({(x.pack or "").strip().lower() for x in m})
+            rep.card_name = _shown(rep)
+        rep.from_price = min(g["prices"]) if g["prices"] else None
+        rep.family_members = m
+        out.append(rep)
+    return out
+
+
+@register.simple_tag
+def cat_card(dept, cat):
+    qs = Product.objects.filter(dept=dept, category=cat, is_public=True, active=True, restricted=False)
+    fams = {_fam_key(p) for p in qs}
+    slug = re.sub(r"[^a-z0-9]+", "-", cat.lower()).strip("-")
+    rel = "shop/img/cat-%s.jpg" % slug
+    photo, cover = "", False
+    if finders.find(rel):
+        photo, cover = _static(rel), True
+    else:
+        with_img = [p for p in qs.exclude(image="").order_by("name") if not _avoided(p.name)]
+        want = COVER_PICKS.get(cat, "").strip().lower()
+        pick = next((p for p in with_img if (p.name or "").strip().lower() == want), None)
+        if pick is None:
+            pins = [x.strip().lower() for x in HOME_PINS.get(dept, [])]
+            pick = next((p for nm in pins for p in with_img if (p.name or "").strip().lower() == nm), None)
+        if pick is None and with_img:
+            pick = with_img[0]
+        if pick is not None:
+            photo = pick.image.url
+    return {"count": len(fams), "photo": photo, "cover": cover, "slug": slug,
+            "desc": CAT_DESC.get(cat, "Browse our range of %s." % cat.lower())}
+
+
+@register.simple_tag
+def product_sizes(p):
+    from shop.naming import tidy
+    qs = Product.objects.filter(dept=p.dept, is_public=True, active=True)
+    if p.dept == "chemist":
+        key = _fam_key(p)
+        fam = [s for s in qs.filter(restricted=False).order_by("name") if _fam_key(s) == key]
+        n = len(_fam_words(p.name))
+        for i, s in enumerate(fam, 1):
+            s.vlabel = tidy(_variant_label(s.name, n)) or s.pack or ("Option %d" % i)
+        return fam
+    seen, out = set(), []
+    for s in qs.filter(name__iexact=p.name).order_by("sell_price", "pack"):
+        k = (s.pack or "").strip().lower()
+        if k not in seen:
+            seen.add(k)
+            s.vlabel = s.pack or ""
+            out.append(s)
+    return out
+
+
+@register.simple_tag
+def wa_link(p=None, text=""):
+    if p is not None:
+        cn = getattr(p, "card_name", "") or ""
+        name = cn or _shown(p)
+        pack = " (%s)" % p.pack if (p.pack and not cn) else ""
+        text = "Hello Friends %s, I would like to enquire about %s%s." % ((p.dept or "").title(), name, pack)
+    return "https://wa.me/%s?text=%s" % (globals().get("WA_NUMBER", "254716217239"), quote(text))

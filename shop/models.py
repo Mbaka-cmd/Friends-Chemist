@@ -8,8 +8,17 @@ DEPTS = [('chemist', 'Friends Chemist'), ('agrovet', 'Friends Agrovet')]
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
-    department = models.CharField(max_length=10, choices=DEPTS)
-    def __str__(self): return f'{self.user} ({self.department})'
+    department = models.CharField(max_length=10, choices=DEPTS, blank=True, help_text='Legacy field. Use the shop access boxes below.')
+    access_chemist = models.BooleanField(default=False)
+    access_agrovet = models.BooleanField(default=False)
+    can_receive_stock = models.BooleanField(default=False, help_text='May record supplier receipts in assigned shops')
+    can_adjust_stock = models.BooleanField(default=False, help_text='May record adjustments and write-offs in assigned shops')
+    adjust_limit = models.PositiveIntegerField(default=5, help_text='Maximum units per adjustment for this staff member')
+    def __str__(self): return f'{self.user} (chemist={self.access_chemist}, agrovet={self.access_agrovet})'
+    def save(self, *a, **k):
+        if self.pk is None and not (self.access_chemist or self.access_agrovet) and self.department:
+            setattr(self, 'access_' + self.department, True)
+        super().save(*a, **k)
 
 class Supplier(models.Model):
     name = models.CharField(max_length=120, unique=True)
@@ -21,6 +30,12 @@ class Product(models.Model):
     STATUS = [('demo', 'DEMO - verify before trading'), ('unverified', 'Unverified'), ('verified', 'Verified')]
     sku = models.CharField(max_length=40, unique=True)
     name = models.CharField(max_length=200)
+    display_name = models.CharField(max_length=120, blank=True, help_text="Name shown to customers. Leave blank to auto-tidy the stock name.")
+
+    @property
+    def public_name(self):
+        from .naming import tidy
+        return self.display_name or tidy(self.name)
     dept = models.CharField(max_length=10, choices=DEPTS)
     category = models.CharField(max_length=80, blank=True)
     pack = models.CharField(max_length=80, blank=True)
