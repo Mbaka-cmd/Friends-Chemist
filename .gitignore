@@ -13,3 +13,7 @@ db.backup.sqlite3
 *.bak2
 *.bak3
 *.bak*
+*.sqlite3
+_step4_backup_*/
+_pyc_backup_*/
+image_match_report.txt
