@@ -1,0 +1,7 @@
+{% load premium_tags %}{% wa_link p as wa %}<article class="pcard" style="--k:{{ forloop.counter0 }}">
+<a class="pimg" href="/{{ p.dept }}/{{ p.sku }}/" aria-label="{{ p.card_name|default:p.name }}">{% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.card_name|default:p.name }}{% if p.pack %} {{ p.pack }}{% endif %}" loading="lazy" decoding="async">{% else %}<span class="pph"><b>{{ p.name|slice:":1"|upper }}</b><i>Photo coming soon</i></span>{% endif %}{% if p.sizes > 1 %}<em class="badge">{{ p.sizes }} {% if p.dept == 'chemist' %}options{% else %}sizes{% endif %}</em>{% endif %}</a>
+<div class="pbody"><span class="pcat">{{ p.category }}</span><h3><a href="/{{ p.dept }}/{{ p.sku }}/">{{ p.card_name|default:p.name }}</a></h3>
+<p class="pmeta">{% if p.sizes > 1 %}{% if p.dept == 'chemist' %}Choose your option{% else %}Multiple pack sizes{% endif %}{% else %}{{ p.pack }}{% endif %}</p>
+<div class="pprice">{% if p.sizes > 1 %}{% if p.from_price %}<small>From</small>KSh {{ p.from_price|floatformat:0 }}{% else %}<small>Confirm price with us</small>{% endif %}{% elif p.sell_price %}KSh {{ p.sell_price|floatformat:0 }}{% else %}<small>Confirm price with us</small>{% endif %}</div>
+<p class="pav{% if p.sellable > 0 %} ok{% endif %}">{% if p.sellable > 0 %}In stock{% else %}Call to confirm availability{% endif %}</p>
+<a class="pbtn" href="{{ wa }}" target="_blank" rel="noopener">Enquire on WhatsApp</a></div></article>

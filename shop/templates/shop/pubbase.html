@@ -1,0 +1,38 @@
+{% load static premium_tags %}<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Friends Agrovet (Kibugua){% endblock %}</title>
+<meta name="description" content="{% block meta_desc %}Farm supplies, animal-health and crop-care products from Friends Agrovet in Kibugua. Call 0716 217239 for product guidance.{% endblock %}">
+<meta name="theme-color" content="#104B30">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="{% static 'shop/premium.css' %}?v=2">{% block head %}{% endblock %}</head>
+{% firstof dept "agrovet" as d %}{% biz as b %}{% shop_cats d as navcats %}
+<body class="{{ d }}">
+<a class="skip" href="#main">Skip to content</a>
+<div class="util"><div class="c"><span class="u-l">{% if d == 'agrovet' %}Quality farm inputs <i class="dot">&bull;</i> Healthy animals <i class="dot">&bull;</i> Productive farms{% else %}Your local pharmacy <i class="dot">&bull;</i> Everyday health products{% endif %}</span>
+<span class="u-r">{{ b.place }} <i class="dot">&bull;</i> <a href="tel:{{ b.tel }}">Call {{ b.phone }}</a> <i class="dot">&bull;</i> {% if d == 'agrovet' %}<a href="/chemist/">Visit our Chemist</a>{% else %}<a href="/agrovet/">Visit our Agrovet</a>{% endif %}</span></div></div>
+<header class="hd"><div class="c">
+<a class="logo" href="/{{ d }}/" aria-label="Friends {{ d|title }} home"><i>{% if d == 'agrovet' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-8"/><path d="M12 13c0-4.2 2.6-7 7-7.4 0 4.6-2.6 7.4-7 7.4z"/><path d="M12 16c0-3-2-5.2-6-5.6 0 3.6 2 5.6 6 5.6z"/></svg>{% else %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z"/></svg>{% endif %}</i><span><b>Friends {{ d|title }}</b><small>{{ b.place }}</small></span></a>
+<nav class="nav" id="nav" aria-label="Main"><a class="lnk" href="/{{ d }}/">Home</a>
+<div class="dd"><a class="lnk" href="/{{ d }}/?shop=1" aria-haspopup="true">Shop <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4"/></svg></a><div class="menu"><a href="/{{ d }}/?shop=1">All products</a>{% for c in navcats %}<a href="/{{ d }}/?cat={{ c|urlencode }}">{{ c }}</a>{% endfor %}</div></div>
+{% if d == 'agrovet' %}{% if "Crop protection" in navcats %}<a class="lnk" href="/agrovet/?cat=Crop%20protection">Crop Care</a>{% endif %}{% if "Animal health" in navcats %}<a class="lnk" href="/agrovet/?cat=Animal%20health">Animal Health</a>{% endif %}<a class="lnk" href="/agrovet/#guides">Farm Advice</a><a class="lnk" href="/agrovet/#why">About</a>{% endif %}
+<a class="lnk" href="/contact/">Contact</a>{% if d == 'agrovet' %}<a class="lnk swap-m" href="/chemist/">Chemist store</a>{% else %}<a class="lnk swap-m" href="/agrovet/">Agrovet store</a>{% endif %}</nav>
+<form class="hs" action="/{{ d }}/" method="get" role="search"><label class="sr" for="hq">Search products</label><input id="hq" name="q" type="search" placeholder="Search products..." autocomplete="off"><button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button></form>
+{% if d == 'agrovet' %}<a class="btn alt swap" href="/chemist/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h12l-3-3"/><path d="M17 17H5l3 3"/></svg>Chemist</a>{% else %}<a class="btn alt swap" href="/agrovet/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h12l-3-3"/><path d="M17 17H5l3 3"/></svg>Agrovet</a>{% endif %}<a class="btn call" href="tel:{{ b.tel }}">Call {{ b.phone }}</a>
+<button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button></div></header>
+<main id="main">{% for m in messages %}<div class="c" style="padding-top:14px"><div class="note">{{ m }}</div></div>{% endfor %}{% block content %}{% endblock %}</main>
+<footer class="ft"><div class="c"><div class="ft-g">
+<div><a class="logo" href="/{{ d }}/"><span><b>Friends {{ d|title }}</b><small>{{ b.place }}</small></span></a><p>{% if d == 'agrovet' %}Farm supplies and product guidance from our shop in {{ b.place }}.{% else %}Everyday health products from our shop in {{ b.place }}.{% endif %} Call or message us to talk through the right product.</p></div>
+<div><h4>Quick links</h4><a href="/agrovet/">Agrovet</a><a href="/chemist/">Chemist</a><a href="/{{ d }}/?shop=1">All products</a><a href="/contact/">Contact</a></div>
+<div><h4>Shop categories</h4>{% for c in navcats %}<a href="/{{ d }}/?cat={{ c|urlencode }}">{{ c }}</a>{% endfor %}</div>
+<div><h4>Get in touch</h4><a href="tel:{{ b.tel }}">{{ b.phone }}</a><a href="{{ b.wa }}" target="_blank" rel="noopener">WhatsApp us</a><span style="display:block;padding:5px 0;font-size:.9rem">{{ b.place }}</span></div></div>
+<div class="ft-b"><span>&copy; {% now "Y" %} Friends Chemist &amp; Agrovet. Powered by Adalyn Technologies.</span><a href="/staff/login/">Staff</a></div></div></footer>
+<script>(function(){var b=document.querySelector('.burger'),n=document.getElementById('nav');if(b&&n){b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false')})}})();</script>
+{% block scripts %}{% endblock %}<script>
+(function(){document.querySelectorAll('.gl-q').forEach(function(q){
+ var box=q.closest('details')||document;
+ q.addEventListener('input',function(){var t=q.value.trim().toLowerCase();
+  box.querySelectorAll('.gl-i').forEach(function(i){i.style.display=(!t||i.dataset.n.indexOf(t)>-1)?'':'none'});
+  box.querySelectorAll('.gl-g').forEach(function(g){var any=[].some.call(g.querySelectorAll('.gl-i'),function(i){return i.style.display!=='none'});g.style.display=any?'':'none'});
+ });});})();
+</script></body></html>
