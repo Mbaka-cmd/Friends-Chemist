@@ -2,7 +2,7 @@ import csv
 import json
 from decimal import Decimal, InvalidOperation
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.middleware.csrf import get_token
 from django.template.loader import render_to_string
 from django.urls import NoReverseMatch, reverse
@@ -12,6 +12,13 @@ from .access import find_route, is_employee
 from .models import Product
 
 DEPTS = {"chemist": "Friends Chemist", "agrovet": "Friends Agrovet"}
+
+
+def _safe(v):
+    # step4: neutralise spreadsheet formulas in CSV exports
+    if isinstance(v, str) and v[:1] in ("=", "+", "-", "@"):
+        return "'" + v
+    return v
 
 
 def _num(v):
@@ -52,7 +59,7 @@ def _nav(dept):
             item("POS", "pos", dept),
             item("Reports", "report", dept),
             item("Enquiries", "enquir", dept)]
-    owner = [item("Profit & loss", "profit"),
+    owner = [item("Profit & loss", "finance"),
              item("Expenses", "expens"),
              item("Products, users, settings", "admin", href="/admin/")]
     site = [item("Chemist storefront", "x", href="/chemist/"),
@@ -74,13 +81,13 @@ def _csv(dept):
                 "In stock", "Reorder at", "Status", "On website"])
     for r in _rows(dept):
         p = r["p"]
-        w.writerow([p.sku, p.name, p.pack, p.category, p.buy_price or "", p.sell_price or "",
-                    r["qty"], p.reorder_level or 0, r["st"], "yes" if p.is_public else "no"])
+        w.writerow([_safe(x) for x in (p.sku, p.name, p.pack, p.category, p.buy_price or "", p.sell_price or "",
+                    r["qty"], p.reorder_level or 0, r["st"], "yes" if p.is_public else "no")])
     return resp
 
 
 def _update(request, dept):
-    if not request.user.is_authenticated or is_employee(request.user):
+    if not request.user.is_authenticated or not request.user.is_superuser:  # step4: owner only
         return JsonResponse({"ok": False, "error": "Not allowed"}, status=403)
     try:
         data = json.loads(request.body or b"{}")
@@ -104,8 +111,11 @@ def _update(request, dept):
                 raise ValueError
         else:
             value = bool(value)
+        old_value = getattr(p, field)
         setattr(p, field, value)
         p.save(update_fields=[field])
+        from .services import audit
+        audit(request.user, "product_edit", "%s %s %s -> %s" % (p.sku, field, old_value, value))
     except (InvalidOperation, ValueError, TypeError):
         return JsonResponse({"ok": False, "error": "Enter a valid number"}, status=400)
     except Exception as e:
@@ -115,6 +125,10 @@ def _update(request, dept):
 
 @csrf_protect
 def stock_page(request, dept):
+    if not (request.user.is_authenticated and request.user.is_superuser):  # step4: owner only
+        return HttpResponseForbidden("Owner only.")
+    if dept not in DEPTS:
+        return HttpResponseForbidden("Unknown department.")
     if request.method == "POST":
         return _update(request, dept)
     if request.GET.get("export") == "csv":

@@ -17,3 +17,5 @@ db.backup.sqlite3
 _step4_backup_*/
 _pyc_backup_*/
 image_match_report.txt
+*.bak9
+*.bak10

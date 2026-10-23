@@ -18,3 +18,14 @@ class RO(admin.ModelAdmin):
     def has_change_permission(self, r, o=None): return False
     def has_delete_permission(self, r, o=None): return False
 admin.site.register(Supplier)
+
+# --- step4 hardening: Django admin is for superusers only ---
+from django.contrib import admin as _step4_admin
+
+
+def _step4_owner_only(request):
+    u = request.user
+    return bool(u.is_active and u.is_superuser)
+
+
+_step4_admin.site.has_permission = _step4_owner_only

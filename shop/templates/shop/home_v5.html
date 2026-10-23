@@ -1,0 +1,125 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ c.brand }} | Kibugua</title>
+<meta name="description" content="{{ c.meta }}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230D2F60'/%3E%3Cpath d='M26 14h12v12h12v12H38v12H26V38H14V26h12z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'shop/home5.css' %}?v=1">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="ann"><div class="wrap"><span>{{ c.ann1 }} &middot; {{ c.ann2 }}</span><span class="ann-r"><span>Kibugua</span><a href="tel:{{ tel }}">Call {{ phone }}</a><a href="{{ other.href }}">Visit our {{ other.label }}</a></span></div></div>
+
+<header class="hd"><div class="wrap hd-in">
+  <a class="brand" href="/{{ dept }}/" aria-label="{{ c.brand }} home">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0753B8"/><path d="M19 9h10v10h10v10H29v10H19V29H9V19h10z" fill="#fff"/></svg>
+    <span><b>{{ c.brand }}</b><small>{{ c.tag }}</small></span>
+  </a>
+  <nav id="nav" class="nav" aria-label="Main">
+    <a href="/{{ dept }}/?shop=1">Shop</a><a href="#categories">Categories</a><a href="#featured">Featured</a><a href="#help">Get advice</a><a href="#contact">Contact</a>
+    <a class="swap-m" href="{{ other.href }}">{{ other.label }} store</a>
+  </nav>
+  <form class="srch" action="/{{ dept }}/" method="get" role="search">
+    <input type="hidden" name="shop" value="1">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input type="search" name="q" placeholder="Search for products..." aria-label="Search products">
+  </form>
+  <a class="swap" href="{{ other.href }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h12l-3-3"/><path d="M17 17H5l3 3"/></svg>{{ other.label }}</a>
+  <button class="menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+</div></header>
+
+<main id="main">
+<section class="hero"><div class="wrap hero-in">
+  <div class="hero-copy">
+    <p class="eyebrow">{{ c.eyebrow }}</p>
+    <h1>{{ c.h1a }}<br>{{ c.h1b }}</h1>
+    <p class="lead">{{ c.lead }}</p>
+    <div class="cta"><a class="btn" href="/{{ dept }}/?shop=1">Shop products &rarr;</a><a class="tl" href="{{ wa_talk }}" target="_blank" rel="noopener">{{ c.talk }}</a></div>
+  </div>
+  {% if slides %}
+  <div class="stage" data-carousel role="region" aria-roledescription="carousel" aria-label="Featured products">
+    {% for s in slides %}<div class="slide{% if forloop.first %} is-active{% endif %}" role="group" aria-roledescription="slide" aria-label="Slide {{ forloop.counter }} of {{ slides|length }}">{% for h in s %}<a class="hc hc-{{ forloop.counter }}" href="{{ h.href }}" aria-label="{{ h.name }}"><img src="{{ h.img }}" alt="{{ h.name }}"></a>{% endfor %}</div>{% endfor %}
+  </div>
+  {% endif %}
+</div></section>
+
+<section class="strip" aria-label="Why shop with us"><div class="wrap strip-in">
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><p><b>Quality Products</b><span>Stocked at our Kibugua shop</span></p></div>
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><p><b>Expert Guidance</b><span>Ask us before you buy</span></p></div>
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><p><b>Easy Enquiries</b><span>On every product</span></p></div>
+  <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></svg><p><b>Need Help?</b><span>Call {{ phone }}</span></p></div>
+</div></section>
+
+{% if cats %}
+<section class="sec" id="categories"><div class="wrap">
+  <div class="sec-h"><div><p class="eyebrow">SHOP BY CATEGORY</p><h2>Find what you need</h2></div><a class="more" href="/{{ dept }}/?shop=1">View all products &rarr;</a></div>
+  <div class="cats" data-cats>
+    <button class="arr prev" type="button" aria-label="Previous categories"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="track" tabindex="0" role="region" aria-label="Categories">
+      {% for k in cats %}<a class="cat" href="{{ k.href }}"><span class="cc">{% if k.photo %}<img src="{{ k.photo }}" alt="" loading="lazy">{% else %}<i>{{ k.name|slice:":1" }}</i>{% endif %}</span><b>{{ k.name }}</b><small>{{ k.count }} product{{ k.count|pluralize }} &rarr;</small></a>{% endfor %}
+    </div>
+    <button class="arr next" type="button" aria-label="Next categories"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+</div></section>
+{% endif %}
+
+{% if feats %}
+<section class="sec alt" id="featured"><div class="wrap">
+  <div class="sec-h"><div><p class="eyebrow">FEATURED PRODUCTS</p><h2>{{ c.feat_h }}</h2></div><a class="more" href="/{{ dept }}/?shop=1">View all products &rarr;</a></div>
+  <div class="grid">
+    {% for p in feats %}<article class="pcard">
+      <a class="pimg" href="{{ p.href }}" aria-label="{{ p.name }}">{% if p.img %}<img src="{{ p.img }}" alt="" loading="lazy">{% else %}<span class="ph">{{ p.name|slice:":1" }}</span>{% endif %}</a>
+      <div class="pb">
+        <p class="pcat">{{ p.cat }}</p>
+        <h3><a href="{{ p.href }}">{{ p.name }}</a></h3>
+        <p class="ppack">{% if p.pack %}{{ p.pack }}{% else %}&nbsp;{% endif %}</p>
+        {% if p.price %}<p class="price">{% if p.from %}<small>From</small> {% endif %}KSh {{ p.price|floatformat:"0g" }}</p>{% else %}<p class="price ask">Ask for price</p>{% endif %}
+        <p class="stock">{% if p.stock %}<i></i>In stock{% else %}&nbsp;{% endif %}</p>
+        <a class="btn full" href="{{ p.wa }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-4.2A8 8 0 118 18.7z"/></svg>Enquire on WhatsApp</a>
+        <a class="btn ghost full" href="{{ p.href }}">View details</a>
+      </div>
+    </article>{% endfor %}
+  </div>
+</div></section>
+{% endif %}
+
+<section class="sec tight" id="help"><div class="wrap">
+  <div class="assist">
+    <div class="as-l">
+      <p class="eyebrow">{{ c.as_label }}</p>
+      <h2>Not sure what you need?</h2>
+      <p>{{ c.as_text }}</p>
+      <a class="btn" href="{{ wa_talk }}" target="_blank" rel="noopener">{{ c.as_cta }} &rarr;</a>
+    </div>
+    <div class="as-m">
+      <p class="as-k">You can also:</p>
+      <a class="act" href="/{{ dept }}/?shop=1"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><p><b>Find a product</b><small>Search our catalogue</small></p></a>
+      <a class="act" href="#categories"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></span><p><b>Browse categories</b><small>Explore the departments</small></p></a>
+      <a class="act" href="{{ wa_talk }}" target="_blank" rel="noopener"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg></span><p><b>{{ c.as_talk }}</b><small>{{ c.as_talk_sub }}</small></p></a>
+    </div>
+    <div class="as-r" aria-hidden="true"><svg viewBox="0 0 320 240"><circle cx="190" cy="120" r="104" fill="#DCEBFF"/><circle cx="262" cy="52" r="34" fill="#C9DEFA"/><circle cx="92" cy="190" r="26" fill="#C9DEFA"/><rect x="108" y="78" width="150" height="86" rx="18" fill="#fff" stroke="#D7E6F8"/><path d="M150 164l-18 22v-22z" fill="#fff" stroke="#D7E6F8"/><path d="M176 96h18v14h14v18h-14v14h-18v-14h-14v-18h14z" fill="#0753B8"/></svg></div>
+  </div>
+  <div class="rx">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+    <p><b>{{ c.rx_h }}</b><span>{{ c.rx_t }}</span></p>
+    <a class="btn ghost" href="{{ wa_talk }}" target="_blank" rel="noopener">{{ c.rx_b }} &rarr;</a>
+  </div>
+</div></section>
+</main>
+
+<footer class="ft" id="contact"><div class="wrap">
+  <div class="ft-g">
+    <div><a class="brand light" href="/{{ dept }}/"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#1673E6"/><path d="M19 9h10v10h10v10H29v10H19V29H9V19h10z" fill="#fff"/></svg><span><b>{{ c.brand }}</b><small>{{ c.tag }}</small></span></a><p class="ft-p">{{ c.meta }}</p></div>
+    <div><h4>Quick Links</h4><a href="/{{ dept }}/?shop=1">Shop</a><a href="#categories">Categories</a><a href="#featured">Featured</a><a href="#help">Get advice</a></div>
+    <div><h4>Our Stores</h4><a href="/chemist/">Friends Chemist</a><a href="/agrovet/">Friends Agrovet</a></div>
+    <div><h4>Get in Touch</h4><p>Kibugua</p><a href="tel:{{ tel }}">{{ phone }}</a><a class="btn ghost light" href="{{ wa_talk }}" target="_blank" rel="noopener">Chat on WhatsApp</a></div>
+  </div>
+  <div class="ft-b"><span>&copy; 2026 Friends Chemist &amp; Agrovet. Powered by Adalyn Technologies.</span><a href="/staff/login/">Staff</a></div>
+</div></footer>
+<script src="{% static 'shop/home5.js' %}?v=1" defer></script>
+</body>
+</html>

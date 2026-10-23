@@ -22,7 +22,7 @@ def zoomed(request, *args, **kwargs):
     resp = m.func(request, *m.args, **m.kwargs)
     if hasattr(resp, 'render') and not getattr(resp, 'is_rendered', True):
         resp.render()
-    if resp.status_code == 200 and 'text/html' in resp.get('Content-Type', '') and hasattr(resp, 'content'):
+    if resp.status_code == 200 and not resp.get('X-No-Zoom') and 'text/html' in resp.get('Content-Type', '') and hasattr(resp, 'content'):
         html = resp.content.decode('utf-8')
         if '</head>' in html:
             html = html.replace('</head>', ZOOM + '</head>', 1)
