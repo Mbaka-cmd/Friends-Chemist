@@ -133,6 +133,6 @@ class HomeV5Middleware:
             path = request.path.strip("/")
             if request.path == "/":
                 return HttpResponseRedirect("/agrovet/")
-            if path in COPY and not any(k for k in request.GET if not k.startswith("utm_")):
+            if path == "chemist" and not any(k for k in request.GET if not k.startswith("utm_")):
                 return render(request, "shop/home_v5.html", build(path))
         return self.get_response(request)
